@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS seat_booking;
+USE seat_booking;
+
+CREATE TABLE IF NOT EXISTS seats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    seat_number VARCHAR(10) NOT NULL UNIQUE,
+    status ENUM('AVAILABLE', 'BOOKED') NOT NULL DEFAULT 'AVAILABLE'
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seat_id INT NOT NULL,
+    user_name VARCHAR(120) NOT NULL,
+    booking_reference VARCHAR(32) NOT NULL UNIQUE,
+    request_key VARCHAR(64) NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL,
+    CONSTRAINT fk_booking_seat FOREIGN KEY (seat_id) REFERENCES seats(id)
+) ENGINE=InnoDB;
+
+INSERT IGNORE INTO seats (seat_number, status) VALUES
+('A1','AVAILABLE'), ('A2','AVAILABLE'), ('A3','AVAILABLE'),
+('A4','AVAILABLE'), ('A5','AVAILABLE'), ('A6','AVAILABLE'),
+('B1','AVAILABLE'), ('B2','AVAILABLE'), ('B3','AVAILABLE'),
+('B4','AVAILABLE'), ('B5','AVAILABLE'), ('B6','AVAILABLE');
